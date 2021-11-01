@@ -8,26 +8,22 @@ def generate_grid() -> List[List[str]]:
     Generates list of lists of letters - i.e. grid for the game.
     e.g. [['I', 'G', 'E'], ['P', 'I', 'S'], ['W', 'M', 'G']]
     """
-    letters_list = []
-
-    for i in range(9):
-        letter_ord = random.randint(97, 122)
-        letters_list.append(chr(letter_ord))
-
-    return letters_list
+    grid = []
+    for line in range(3):
+        line_list = []
+        for element in range(3):
+            letter_ord = random.randint(97, 122)
+            line_list.append(chr(letter_ord))
+            line = element #don't ask why
+            element = line
+        grid.append(line_list)
+    return grid
 
 
 def get_words(path: str, letters: List[str]) -> List[str]:
     """
     Reads the file path. Checks the words with rules and returns a list of words.
     """
-    # letters_tuples = []
-    # grid_list = []
-    # for letter in letters_list:
-    #     letters_tuples.append((letter, letters_list.count(letter)))
-    # for letter in letters_tuples:
-    #     if letter not in grid_list:
-    #         grid_list.append(letter)
     words_from_dict = []
 
     with open(path, 'r') as file:
@@ -51,8 +47,6 @@ def get_words(path: str, letters: List[str]) -> List[str]:
                 if num == len(word):
                     words_from_dict.append(word)
     return words_from_dict
-
-# print(get_words('/home/olesia/UCU_OP/Year_1/Lab_6/game_lab_6/en.txt', [el for el in 'jniarnoah']))
 
 
 def get_user_words() -> List[str]:
