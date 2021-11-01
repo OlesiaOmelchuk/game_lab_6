@@ -17,9 +17,9 @@ def generate_grid() -> List[List[str]]:
     return letters_list
 
 
-def get_words(f: str, letters: List[str]) -> List[str]:
+def get_words(path: str, letters: List[str]) -> List[str]:
     """
-    Reads the file f. Checks the words with rules and returns a list of words.
+    Reads the file path. Checks the words with rules and returns a list of words.
     """
     # letters_tuples = []
     # grid_list = []
@@ -30,7 +30,7 @@ def get_words(f: str, letters: List[str]) -> List[str]:
     #         grid_list.append(letter)
     words_from_dict = []
 
-    with open(f, 'r') as file:
+    with open(path, 'r') as file:
         content = file.read()
     content = content.lower()
     all_words = content.split()
@@ -68,7 +68,8 @@ def get_user_words() -> List[str]:
             return user_words
 
 
-def get_pure_user_words(user_words: List[str], letters: List[str], words_from_dict: List[str]) -> List[str]:
+def get_pure_user_words(user_words: List[str], letters: List[str],\
+                        words_from_dict: List[str]) -> List[str]:
     """
     (list, list, list) -> list
 
@@ -76,11 +77,38 @@ def get_pure_user_words(user_words: List[str], letters: List[str], words_from_di
     that are not in dictionary.
     """
     pure_words = []
+    central_letter = letters[4]
     for word in user_words:
-        if words_from_dict.count(word) == 0:
-            pure_words.append(word)
+        if (len(word) >= 4) and (word.count(central_letter) >= 1):
+            num = 0
+            for letter in word:
+                if letters.count(letter) >= 1:
+                    num += 1
+            if num == len(word):
+                num = 0
+                for letter in word:
+                    if word.count(letter) <= letters.count(letter):
+                        num += 1
+                if num == len(word):
+                    if words_from_dict.count(word) == 0:
+                        pure_words.append(word)
     return pure_words
 
 
 def results():
-    pass
+    """
+    Prints results of the game and writes them into a file result.txt
+    """
+    dict_words = get_words("en.txt", generate_grid())
+    user_words = get_user_words()
+    letters = generate_grid()
+    pure_words = get_pure_user_words(user_words, letters, dict_words)
+
+    print(len(user_words) - len(pure_words))
+    print(dict_words)
+    print(user_words)
+    print(pure_words)
+
+    with open('result.txt', 'w') as file:
+        file.write(len(user_words) - len(pure_words), '\n',
+                   dict_words, '\n', user_words, '\n', pure_words, '\n')
