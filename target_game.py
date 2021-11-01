@@ -14,7 +14,6 @@ def generate_grid() -> List[List[str]]:
         letter_ord = random.randint(97, 122)
         letters_list.append(chr(letter_ord))
 
-
     return letters_list
 
 
@@ -53,8 +52,7 @@ def get_words(f: str, letters: List[str]) -> List[str]:
                     words_from_dict.append(word)
     return words_from_dict
 
-print(get_words('/home/olesia/UCU_OP/Year_1/Lab_6/game_lab_6/en.txt', [el for el in 'jniarnoah']))
-        
+# print(get_words('/home/olesia/UCU_OP/Year_1/Lab_6/game_lab_6/en.txt', [el for el in 'jniarnoah']))
 
 
 def get_user_words() -> List[str]:
@@ -62,7 +60,12 @@ def get_user_words() -> List[str]:
     Gets words from user input and returns a list with these words.
     Usage: enter a word or press ctrl+d to finish.
     """
-    pass
+    user_words = []
+    while True:
+        try:
+            user_words.append(input())
+        except EOFError:
+            return user_words
 
 
 def get_pure_user_words(user_words: List[str], letters: List[str], words_from_dict: List[str]) -> List[str]:
@@ -72,7 +75,11 @@ def get_pure_user_words(user_words: List[str], letters: List[str], words_from_di
     Checks user words with the rules and returns list of those words
     that are not in dictionary.
     """
-    pass
+    pure_words = []
+    for word in user_words:
+        if words_from_dict.count(word) == 0:
+            pure_words.append(word)
+    return pure_words
 
 
 def results():
